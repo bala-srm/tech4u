@@ -221,13 +221,15 @@ nav{
   flex-shrink:0;
 }
 
-/* ── NOTIFY FORM ── */
+/* ── NOTIFY FORM (Tally embed wrapper) ── */
 .notify-section{
   display:flex;flex-direction:column;align-items:center;
   gap:16px;
   margin-bottom:72px;
   opacity:0;
   animation:fadeUp 0.7s var(--ease-out) 1.15s forwards;
+  width:100%;
+  max-width:520px;
 }
 .notify-label{
   font-family:var(--font-mono);
@@ -235,61 +237,36 @@ nav{
   letter-spacing:.15em;
   text-transform:uppercase;
   color:var(--cream-500);
+  display:flex;align-items:center;gap:12px;
 }
-.notify-form{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  justify-content:center;
+.notify-label::before,.notify-label::after{
+  content:'';display:block;
+  width:24px;height:1px;
+  background:var(--cream-500);opacity:.35;
 }
-.notify-input{
-  padding:14px 22px;
-  border-radius:12px;
-  border:1px solid rgba(255,255,255,.12);
-  background:rgba(255,255,255,.06);
-  color:var(--cream-100);
-  font-family:var(--font-sans);
-  font-size:15px;font-weight:500;
-  width:280px;
-  outline:none;
-  transition:all 200ms;
-  backdrop-filter:blur(8px);
-}
-.notify-input::placeholder{color:rgba(255,255,255,.3)}
-.notify-input:focus{
-  border-color:rgba(216,33,127,.5);
-  background:rgba(255,255,255,.09);
-  box-shadow:0 0 0 3px rgba(216,33,127,.12);
-}
-.notify-btn{
-  padding:14px 28px;
-  border-radius:12px;
-  border:none;
-  background:var(--aurora);
-  color:#fff;
-  font-family:var(--font-sans);
-  font-size:15px;font-weight:700;
-  cursor:pointer;
-  transition:all 200ms var(--ease-out);
-  white-space:nowrap;
+/* Tally iframe container — glassmorphism card matching the page aesthetic */
+.tally-wrap{
+  width:100%;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:20px;
+  backdrop-filter:blur(12px);
+  padding:32px 32px 24px;
+  box-shadow:0 0 0 1px rgba(216,33,127,.06), 0 24px 48px rgba(0,0,0,.35);
   position:relative;
   overflow:hidden;
 }
-.notify-btn::after{
+/* Subtle aurora glow along top edge */
+.tally-wrap::before{
   content:'';
-  position:absolute;inset:0;
-  background:rgba(255,255,255,0);
-  transition:background 200ms;
+  position:absolute;top:0;left:0;right:0;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(216,33,127,.5),rgba(255,122,69,.4),transparent);
 }
-.notify-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(216,33,127,.4)}
-.notify-btn:hover::after{background:rgba(255,255,255,.08)}
-.notify-btn:active{transform:translateY(0)}
-.notify-success{
-  display:none;
-  font-family:var(--font-mono);
-  font-size:13px;font-weight:600;
-  color:#2EB872;
-  letter-spacing:.06em;
+.tally-wrap iframe{
+  display:block;
+  width:100%;
+  border:none;
 }
 
 /* ── BRAND VALUES STRIP ── */
@@ -516,6 +493,7 @@ footer{
   <div class="notify-section">
   <div class="notify-label">Get early access</div>
 
+  <div class="tally-wrap">
   <iframe
     data-tally-src="https://tally.so/embed/44EADY?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
     loading="lazy"
@@ -526,6 +504,7 @@ footer{
     marginwidth="0"
     title="Contact Information">
   </iframe>
+  </div>
 
 </div>
 
