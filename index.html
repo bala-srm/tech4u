@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>tech4u.ai — Simplified</title>
+<meta name="description" content="Data Science, Machine Learning and AI — made genuinely simple. tech4u.ai is launching soon.">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --violet:   #421771;
+  --pink:     #D8217F;
+  --ember:    #FF7A45;
+  --ink-1000: #07020F;
+  --ink-900:  #0E0420;
+  --ink-800:  #1A0B33;
+  --ink-700:  #2A1547;
+  --ink-600:  #3D2160;
+  --violet-200:#CBAFF1;
+  --violet-300:#A77DE6;
+  --violet-500:#6B2BB8;
+  --violet-600:#561F95;
+  --pink-300: #F569AC;
+  --pink-400: #F0379A;
+  --cream-50: #FFFCF7;
+  --cream-100:#FBF6EE;
+  --cream-200:#F3EBDD;
+  --cream-300:#E6D9C3;
+  --cream-400:#C7B8A0;
+  --cream-500:#968774;
+  --aurora: linear-gradient(135deg,#421771 0%,#D8217F 60%,#FF7A45 100%);
+  --ease-out: cubic-bezier(0.22,1,0.36,1);
+  --font-display: 'Instrument Serif',Georgia,serif;
+  --font-sans:    'Plus Jakarta Sans',system-ui,sans-serif;
+  --font-mono:    'JetBrains Mono',monospace;
+}
+
+html{scroll-behavior:smooth;height:100%}
+body{
+  background:var(--ink-1000);
+  color:var(--cream-100);
+  font-family:var(--font-sans);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ── NOISE TEXTURE ── */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity:0.025;
+  pointer-events:none;
+  z-index:0;
+}
+
+/* ── AURORA BLOBS ── */
+.blob{
+  position:fixed;
+  border-radius:50%;
+  filter:blur(100px);
+  pointer-events:none;
+  z-index:0;
+  animation:blobDrift 18s ease-in-out infinite alternate;
+}
+.blob-1{
+  width:700px;height:700px;
+  right:-200px;top:-250px;
+  background:radial-gradient(circle,#421771,transparent 70%);
+  opacity:.22;
+  animation-duration:20s;
+}
+.blob-2{
+  width:500px;height:500px;
+  left:-150px;bottom:-150px;
+  background:radial-gradient(circle,#D8217F,transparent 70%);
+  opacity:.14;
+  animation-duration:16s;animation-delay:-8s;
+}
+.blob-3{
+  width:350px;height:350px;
+  left:50%;top:40%;
+  background:radial-gradient(circle,#FF7A45,transparent 70%);
+  opacity:.07;
+  animation-duration:22s;animation-delay:-4s;
+}
+@keyframes blobDrift{
+  0%{transform:translate(0,0) scale(1)}
+  100%{transform:translate(30px,40px) scale(1.06)}
+}
+
+/* ── LAYOUT ── */
+.page{
+  position:relative;
+  z-index:1;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:80px 24px 60px;
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;
+  top:0;left:0;right:0;
+  z-index:100;
+  height:56px;
+  display:flex;
+  align-items:center;
+  padding:0 40px;
+  background:rgba(7,2,15,.75);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(255,255,255,.05);
+}
+.nav-tag{
+  font-family:var(--font-mono);
+  font-size:11px;font-weight:600;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--pink-300);
+  margin-left:auto;
+  opacity:.8;
+}
+
+/* ── LOGO SVG ── */
+.logo-wrap{
+  margin-bottom:40px;
+  opacity:0;
+  animation:fadeUp 0.7s var(--ease-out) 0.1s forwards;
+}
+
+/* ── EYEBROW ── */
+.eyebrow{
+  font-family:var(--font-mono);
+  font-size:12px;font-weight:600;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:var(--pink-300);
+  margin-bottom:24px;
+  opacity:0;
+  animation:driftIn 0.6s var(--ease-out) 0.5s forwards;
+  display:flex;align-items:center;gap:12px;
+}
+.eyebrow::before,.eyebrow::after{
+  content:'';
+  display:block;
+  width:28px;height:1px;
+  background:var(--pink-300);
+  opacity:.4;
+}
+
+/* ── HEADLINE ── */
+.headline{
+  font-family:var(--font-display);
+  font-size:clamp(42px,7vw,88px);
+  font-weight:400;
+  line-height:1.04;
+  text-align:center;
+  max-width:900px;
+  margin-bottom:28px;
+  opacity:0;
+  animation:fadeUp 0.7s var(--ease-out) 0.65s forwards;
+}
+.headline em{
+  font-style:italic;
+  background:var(--aurora);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  display:inline-block;
+  padding-right:0.05em;
+}
+
+/* ── SUBHEAD ── */
+.subhead{
+  font-size:clamp(16px,2.2vw,20px);
+  font-weight:500;
+  line-height:1.65;
+  color:var(--violet-200);
+  text-align:center;
+  max-width:620px;
+  margin-bottom:56px;
+  opacity:0;
+  animation:fadeUp 0.7s var(--ease-out) 0.8s forwards;
+}
+
+/* ── PILLARS ── */
+.pillars{
+  display:flex;
+  gap:16px;
+  flex-wrap:wrap;
+  justify-content:center;
+  margin-bottom:64px;
+  opacity:0;
+  animation:fadeUp 0.7s var(--ease-out) 1.0s forwards;
+}
+.pillar{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 22px;
+  border-radius:100px;
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.04);
+  backdrop-filter:blur(8px);
+  font-size:14px;font-weight:600;
+  color:var(--cream-300);
+  transition:all 200ms var(--ease-out);
+  cursor:default;
+}
+.pillar:hover{
+  background:rgba(216,33,127,.1);
+  border-color:rgba(216,33,127,.35);
+  color:var(--pink-300);
+  transform:translateY(-2px);
+}
+.pillar-dot{
+  width:8px;height:8px;border-radius:50%;
+  flex-shrink:0;
+}
+
+/* ── NOTIFY FORM ── */
+.notify-section{
+  display:flex;flex-direction:column;align-items:center;
+  gap:16px;
+  margin-bottom:72px;
+  opacity:0;
+  animation:fadeUp 0.7s var(--ease-out) 1.15s forwards;
+}
+.notify-label{
+  font-family:var(--font-mono);
+  font-size:12px;font-weight:600;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  color:var(--cream-500);
+}
+.notify-form{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+.notify-input{
+  padding:14px 22px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.06);
+  color:var(--cream-100);
+  font-family:var(--font-sans);
+  font-size:15px;font-weight:500;
+  width:280px;
+  outline:none;
+  transition:all 200ms;
+  backdrop-filter:blur(8px);
+}
+.notify-input::placeholder{color:rgba(255,255,255,.3)}
+.notify-input:focus{
+  border-color:rgba(216,33,127,.5);
+  background:rgba(255,255,255,.09);
+  box-shadow:0 0 0 3px rgba(216,33,127,.12);
+}
+.notify-btn{
+  padding:14px 28px;
+  border-radius:12px;
+  border:none;
+  background:var(--aurora);
+  color:#fff;
+  font-family:var(--font-sans);
+  font-size:15px;font-weight:700;
+  cursor:pointer;
+  transition:all 200ms var(--ease-out);
+  white-space:nowrap;
+  position:relative;
+  overflow:hidden;
+}
+.notify-btn::after{
+  content:'';
+  position:absolute;inset:0;
+  background:rgba(255,255,255,0);
+  transition:background 200ms;
+}
+.notify-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(216,33,127,.4)}
+.notify-btn:hover::after{background:rgba(255,255,255,.08)}
+.notify-btn:active{transform:translateY(0)}
+.notify-success{
+  display:none;
+  font-family:var(--font-mono);
+  font-size:13px;font-weight:600;
+  color:#2EB872;
+  letter-spacing:.06em;
+}
+
+/* ── BRAND VALUES STRIP ── */
+.values-strip{
+  display:flex;
+  gap:0;
+  border-radius:20px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.07);
+  max-width:800px;
+  width:100%;
+  opacity:0;
+  animation:fadeUp 0.7s var(--ease-out) 1.3s forwards;
+}
+.value-card{
+  flex:1;
+  padding:28px 24px;
+  background:rgba(255,255,255,.03);
+  border-right:1px solid rgba(255,255,255,.06);
+  text-align:center;
+  transition:background 200ms;
+}
+.value-card:last-child{border-right:none}
+.value-card:hover{background:rgba(107,43,184,.12)}
+.value-icon{font-size:26px;margin-bottom:10px}
+.value-title{
+  font-family:var(--font-sans);
+  font-size:13px;font-weight:700;
+  color:var(--cream-200);
+  margin-bottom:6px;
+  letter-spacing:.02em;
+}
+.value-desc{
+  font-size:12px;
+  line-height:1.55;
+  color:var(--violet-200);
+}
+
+/* ── FOOTER ── */
+footer{
+  position:relative;z-index:1;
+  padding:32px 24px;
+  text-align:center;
+  border-top:1px solid rgba(255,255,255,.05);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:12px;
+}
+.footer-tagline{
+  font-family:var(--font-mono);
+  font-size:11px;font-weight:600;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.18);
+}
+
+/* ── AURORA LINE ── */
+.aurora-line{
+  width:120px;height:2px;
+  background:var(--aurora);
+  border-radius:2px;
+  margin:0 auto 8px;
+  opacity:.5;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(28px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes driftIn{
+  from{opacity:0;filter:blur(8px);transform:scale(1.04)}
+  to{opacity:1;filter:blur(0);transform:scale(1)}
+}
+
+/* ── COUNTDOWN ── */
+.countdown-wrap{
+  display:flex;gap:24px;margin-bottom:64px;
+  opacity:0;
+  animation:fadeUp 0.7s var(--ease-out) 1.05s forwards;
+}
+.countdown-unit{text-align:center}
+.countdown-num{
+  font-family:var(--font-display);
+  font-size:clamp(36px,5vw,56px);
+  font-style:italic;
+  background:var(--aurora);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  line-height:1;
+  display:block;
+}
+.countdown-label{
+  font-family:var(--font-mono);
+  font-size:10px;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--cream-500);
+  margin-top:6px;
+}
+.countdown-sep{
+  font-family:var(--font-display);
+  font-size:44px;font-style:italic;
+  color:rgba(255,255,255,.15);
+  align-self:flex-start;
+  padding-top:6px;
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:640px){
+  .values-strip{flex-direction:column}
+  .value-card{border-right:none;border-bottom:1px solid rgba(255,255,255,.06)}
+  .value-card:last-child{border-bottom:none}
+  .notify-input{width:100%;max-width:320px}
+  .pillars{gap:10px}
+  nav{padding:0 20px}
+}
+
+/* ── REDUCED MOTION ── */
+@media(prefers-reduced-motion:reduce){
+  .blob{animation:none}
+  .logo-wrap,.eyebrow,.headline,.subhead,.pillars,
+  .notify-section,.values-strip,.countdown-wrap{
+    opacity:1;animation:none;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- AMBIENT BLOBS -->
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+
+<!-- NAV -->
+<nav>
+  <!-- Logo mark (icon only) -->
+  <svg width="28" height="28" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-label="tech4u.ai icon">
+    <defs>
+      <linearGradient id="ns" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#D8217F"/><stop offset="100%" stop-color="#FF7A45"/></linearGradient>
+    </defs>
+    <rect x="0"  y="14" width="22" height="22" rx="4"   fill="#6B2BB8"/>
+    <rect x="12" y="4"  width="18" height="18" rx="3.5" fill="url(#ns)"/>
+    <rect x="20" y="0"  width="11" height="11" rx="2.5" fill="#F0379A"/>
+    <rect x="34" y="8"  width="9"  height="9"  rx="2"   fill="#FF7A45"/>
+    <rect x="20" y="24" width="7"  height="7"  rx="1.5" fill="#D8217F"/>
+    <rect x="36" y="18" width="6"  height="6"  rx="1.5" fill="#FF7A45" opacity=".7"/>
+  </svg>
+  <span class="nav-tag">Coming Soon</span>
+</nav>
+
+<!-- MAIN PAGE -->
+<main class="page">
+
+  <!-- LOGO -->
+  <div class="logo-wrap">
+    <svg width="340" height="148" viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg" aria-label="tech4u.ai — simplified">
+      <defs>
+        <linearGradient id="lb" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#D8217F"/><stop offset="100%" stop-color="#FF7A45"/></linearGradient>
+        <linearGradient id="ls" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#D8217F"/><stop offset="100%" stop-color="#FF7A45"/></linearGradient>
+      </defs>
+      <!-- squares motif -->
+      <g transform="translate(238,0)">
+        <rect x="0"  y="18" width="24" height="24" rx="4"   fill="#6B2BB8"/>
+        <rect x="15" y="6"  width="18" height="18" rx="3"   fill="url(#ls)"/>
+        <rect x="21" y="0"  width="11" height="11" rx="2"   fill="#F0379A"/>
+        <rect x="34" y="10" width="9"  height="9"  rx="1.5" fill="#FF7A45"/>
+        <rect x="21" y="26" width="7"  height="7"  rx="1.5" fill="#D8217F"/>
+        <rect x="36" y="22" width="6"  height="6"  rx="1"   fill="#FF7A45" opacity=".7"/>
+      </g>
+      <!-- wordmark -->
+      <text x="0" y="78" font-family="'Plus Jakarta Sans',sans-serif" font-weight="800" font-size="62" fill="white" letter-spacing="-1">tech</text>
+      <!-- speech bubble -->
+      <g transform="translate(149,20)">
+        <path d="M6,0 L82,0 Q90,0 90,8 L90,50 Q90,58 82,58 L6,58 Q-2,58 -2,50 L-2,8 Q-2,0 6,0 Z" fill="url(#lb)"/>
+        <path d="M8,58 L-4,74 L28,58 Z" fill="#D8217F"/>
+        <text x="44" y="42" font-family="'Plus Jakarta Sans',sans-serif" font-weight="800" font-size="46" fill="white" text-anchor="middle" font-style="italic" letter-spacing="-1">4U</text>
+      </g>
+      <text x="246" y="78" font-family="'Plus Jakarta Sans',sans-serif" font-weight="800" font-size="62" fill="white" letter-spacing="-1">.ai</text>
+      <!-- tagline -->
+      <text x="160" y="112" font-family="'JetBrains Mono',monospace" font-size="13" fill="#C7B8A0" text-anchor="middle" letter-spacing="5">simplified</text>
+      <line x1="20"  y1="109" x2="62"  y2="109" stroke="#C7B8A0" stroke-width=".8" opacity=".4"/>
+      <line x1="258" y1="109" x2="300" y2="109" stroke="#C7B8A0" stroke-width=".8" opacity=".4"/>
+      <circle cx="16"  cy="109" r="2.5" fill="#F569AC" opacity=".7"/>
+      <circle cx="304" cy="109" r="2.5" fill="#FF7A45" opacity=".7"/>
+    </svg>
+  </div>
+
+  <!-- EYEBROW -->
+  <div class="eyebrow">Something brilliant is loading</div>
+
+  <!-- HEADLINE -->
+  <h1 class="headline">
+    AI and Machine Learning,<br>
+    <em>finally made simple</em>
+  </h1>
+
+  <!-- SUBHEAD -->
+  <p class="subhead">
+    We're building a learning platform where every concept lands — not just for engineers,
+    but for anyone ready to understand the technology shaping our world.
+  </p>
+
+  <!-- PILLARS -->
+  <div class="pillars">
+    <div class="pillar"><span class="pillar-dot" style="background:#6B2BB8"></span>Data Science</div>
+    <div class="pillar"><span class="pillar-dot" style="background:#D8217F"></span>Machine Learning</div>
+    <div class="pillar"><span class="pillar-dot" style="background:#FF7A45"></span>Generative AI</div>
+    <div class="pillar"><span class="pillar-dot" style="background:#F0379A"></span>Deep Learning</div>
+  </div>
+
+  <!-- COUNTDOWN -->
+  <div class="countdown-wrap" id="countdown">
+    <div class="countdown-unit"><span class="countdown-num" id="cd-d">00</span><span class="countdown-label">Days</span></div>
+    <div class="countdown-sep">·</div>
+    <div class="countdown-unit"><span class="countdown-num" id="cd-h">00</span><span class="countdown-label">Hours</span></div>
+    <div class="countdown-sep">·</div>
+    <div class="countdown-unit"><span class="countdown-num" id="cd-m">00</span><span class="countdown-label">Mins</span></div>
+    <div class="countdown-sep">·</div>
+    <div class="countdown-unit"><span class="countdown-num" id="cd-s">00</span><span class="countdown-label">Secs</span></div>
+  </div>
+
+  <!-- NOTIFY -->
+  <div class="notify-section">
+    <div class="notify-label">Get early access</div>
+    <div class="notify-form" id="notify-form">
+      <input class="notify-input" type="email" id="email-input" placeholder="your@email.com" aria-label="Email address">
+      <button class="notify-btn" onclick="handleNotify()">Notify me at launch</button>
+    </div>
+    <div class="notify-success" id="notify-success">✓ You're on the list — we'll be in touch!</div>
+  </div>
+
+  <!-- BRAND VALUES -->
+  <div class="values-strip">
+    <div class="value-card">
+      <div class="value-icon">🔥</div>
+      <div class="value-title">Warm</div>
+      <div class="value-desc">A knowledgeable friend — never cold, never academic.</div>
+    </div>
+    <div class="value-card">
+      <div class="value-icon">🔬</div>
+      <div class="value-title">Rigorous</div>
+      <div class="value-desc">Simplified — not dumbed down. The maths is always right.</div>
+    </div>
+    <div class="value-card">
+      <div class="value-icon">🌍</div>
+      <div class="value-title">Grounded</div>
+      <div class="value-desc">Real examples from India and the world — not toy datasets.</div>
+    </div>
+    <div class="value-card">
+      <div class="value-icon">✨</div>
+      <div class="value-title">Energetic</div>
+      <div class="value-desc">Every lesson feels like an event. That's the promise.</div>
+    </div>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <svg width="180" height="78" viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg" opacity=".45">
+    <defs>
+      <linearGradient id="fb" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#D8217F"/><stop offset="100%" stop-color="#FF7A45"/></linearGradient>
+      <linearGradient id="fs" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#D8217F"/><stop offset="100%" stop-color="#FF7A45"/></linearGradient>
+    </defs>
+    <g transform="translate(238,0)"><rect x="0" y="18" width="24" height="24" rx="4" fill="#6B2BB8"/><rect x="15" y="6" width="18" height="18" rx="3" fill="url(#fs)"/><rect x="21" y="0" width="11" height="11" rx="2" fill="#F0379A"/><rect x="34" y="10" width="9" height="9" rx="1.5" fill="#FF7A45"/><rect x="21" y="26" width="7" height="7" rx="1.5" fill="#D8217F"/><rect x="36" y="22" width="6" height="6" rx="1" fill="#FF7A45" opacity=".7"/></g>
+    <text x="0" y="78" font-family="'Plus Jakarta Sans',sans-serif" font-weight="800" font-size="62" fill="white" letter-spacing="-1">tech</text>
+    <g transform="translate(149,20)"><path d="M6,0 L82,0 Q90,0 90,8 L90,50 Q90,58 82,58 L6,58 Q-2,58 -2,50 L-2,8 Q-2,0 6,0 Z" fill="url(#fb)"/><path d="M8,58 L-4,74 L28,58 Z" fill="#D8217F"/><text x="44" y="42" font-family="'Plus Jakarta Sans',sans-serif" font-weight="800" font-size="46" fill="white" text-anchor="middle" font-style="italic" letter-spacing="-1">4U</text></g>
+    <text x="246" y="78" font-family="'Plus Jakarta Sans',sans-serif" font-weight="800" font-size="62" fill="white" letter-spacing="-1">.ai</text>
+    <text x="160" y="112" font-family="'JetBrains Mono',monospace" font-size="13" fill="#C7B8A0" text-anchor="middle" letter-spacing="5">simplified</text>
+    <line x1="20" y1="109" x2="62" y2="109" stroke="#C7B8A0" stroke-width=".8" opacity=".4"/><line x1="258" y1="109" x2="300" y2="109" stroke="#C7B8A0" stroke-width=".8" opacity=".4"/>
+    <circle cx="16" cy="109" r="2.5" fill="#F569AC" opacity=".7"/><circle cx="304" cy="109" r="2.5" fill="#FF7A45" opacity=".7"/>
+  </svg>
+  <div class="aurora-line"></div>
+  <div class="footer-tagline">© 2025 tech4u.ai · All rights reserved · Launching soon</div>
+</footer>
+
+<script>
+// ── COUNTDOWN  (target: 90 days from today as placeholder) ──
+(function(){
+  // Set your real launch date here — format: 'YYYY-MM-DDTHH:MM:SS'
+  const LAUNCH = new Date('2025-10-01T00:00:00');
+
+  function tick(){
+    const now = new Date();
+    const diff = LAUNCH - now;
+    if(diff <= 0){
+      document.getElementById('countdown').style.display = 'none';
+      return;
+    }
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    document.getElementById('cd-d').textContent = String(d).padStart(2,'0');
+    document.getElementById('cd-h').textContent = String(h).padStart(2,'0');
+    document.getElementById('cd-m').textContent = String(m).padStart(2,'0');
+    document.getElementById('cd-s').textContent = String(s).padStart(2,'0');
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+
+// ── NOTIFY FORM ──
+function handleNotify(){
+  const input = document.getElementById('email-input');
+  const email = input.value.trim();
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if(!re.test(email)){
+    input.style.borderColor = 'rgba(255,80,80,.6)';
+    input.style.boxShadow   = '0 0 0 3px rgba(255,80,80,.12)';
+    input.focus();
+    return;
+  }
+  // Hide form, show success
+  document.getElementById('notify-form').style.display = 'none';
+  const msg = document.getElementById('notify-success');
+  msg.style.display = 'block';
+
+  // (In production: POST email to your backend/Mailchimp/etc.)
+  console.log('Notify signup:', email);
+}
+
+document.getElementById('email-input').addEventListener('keydown', function(e){
+  if(e.key === 'Enter') handleNotify();
+  this.style.borderColor = '';
+  this.style.boxShadow   = '';
+});
+</script>
+</body>
+</html>
