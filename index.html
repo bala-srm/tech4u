@@ -514,13 +514,20 @@ footer{
 
   <!-- NOTIFY -->
   <div class="notify-section">
-    <div class="notify-label">Get early access</div>
-    <div class="notify-form" id="notify-form">
-      <input class="notify-input" type="email" id="email-input" placeholder="your@email.com" aria-label="Email address">
-      <button class="notify-btn" onclick="handleNotify()">Notify me at launch</button>
-    </div>
-    <div class="notify-success" id="notify-success">✓ You're on the list — we'll be in touch!</div>
-  </div>
+  <div class="notify-label">Get early access</div>
+
+  <iframe
+    data-tally-src="https://tally.so/embed/44EADY?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
+    loading="lazy"
+    width="100%"
+    height="400"
+    frameborder="0"
+    marginheight="0"
+    marginwidth="0"
+    title="Contact Information">
+  </iframe>
+
+</div>
 
   <!-- BRAND VALUES -->
   <div class="values-strip">
@@ -593,31 +600,31 @@ footer{
   setInterval(tick, 1000);
 })();
 
-// ── NOTIFY FORM ──
-function handleNotify(){
-  const input = document.getElementById('email-input');
-  const email = input.value.trim();
-  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if(!re.test(email)){
-    input.style.borderColor = 'rgba(255,80,80,.6)';
-    input.style.boxShadow   = '0 0 0 3px rgba(255,80,80,.12)';
-    input.focus();
-    return;
+</script>
+<script>
+var d=document,
+w="https://tally.so/widgets/embed.js",
+v=function(){
+  if(typeof Tally!=="undefined"){
+    Tally.loadEmbeds();
+  } else {
+    d.querySelectorAll("iframe[data-tally-src]:not([src])")
+      .forEach(function(e){
+        e.src=e.dataset.tallySrc;
+      });
   }
-  // Hide form, show success
-  document.getElementById('notify-form').style.display = 'none';
-  const msg = document.getElementById('notify-success');
-  msg.style.display = 'block';
+};
 
-  // (In production: POST email to your backend/Mailchimp/etc.)
-  console.log('Notify signup:', email);
+if(typeof Tally!=="undefined"){
+  v();
 }
-
-document.getElementById('email-input').addEventListener('keydown', function(e){
-  if(e.key === 'Enter') handleNotify();
-  this.style.borderColor = '';
-  this.style.boxShadow   = '';
-});
+else if(d.querySelector('script[src="'+w+'"]')==null){
+  var s=d.createElement("script");
+  s.src=w;
+  s.onload=v;
+  s.onerror=v;
+  d.body.appendChild(s);
+}
 </script>
 </body>
 </html>
